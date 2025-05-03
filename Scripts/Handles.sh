@@ -30,6 +30,16 @@ if [ -f "$NSS_DRV" ]; then
 	cd $PKG_PATH && echo "qca-nss-drv has been fixed!"
 fi
 
+#修改argon主题字体和颜色
+if [ -d *"luci-theme-argon"* ]; then
+	cd ./luci-theme-argon/
+
+	sed -i "/font-weight:/ { /important/! { /\/\*/! s/:.*/: var(--font-weight);/ } }" $(find ./luci-theme-argon -type f -iname "*.css")
+	sed -i "s/primary '.*'/primary '#31a1a1'/; s/'0.2'/'0.5'/; s/'none'/'bing'/; s/'600'/'normal'/" ./luci-app-argon-config/root/etc/config/argon
+
+	cd $PKG_PATH && echo "theme-argon has been fixed!"
+fi
+
 #修改qca-nss-pbuf启动顺序
 NSS_PBUF="./kernel/mac80211/files/qca-nss-pbuf.init"
 if [ -f "$NSS_PBUF" ]; then
